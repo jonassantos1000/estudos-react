@@ -21,7 +21,7 @@ function App() {
   const [countKey, setCountKey] = useState<number>(0)
   const [nomeTarefa, setNomeTarefa] = useState<string>('')
 
-  const adicionarTarefa = () => {
+  const addTask = () => {
     
     setCountKey(countKey + 1)
 
@@ -30,8 +30,12 @@ function App() {
     setTarefas([...tarefas, novaTarefa])
   }
 
-  const handleNomeTarefa = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleOnChangeNameTask = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setNomeTarefa(event.target.value)
+  }
+
+  const handleRemoveTask =  (id: number) => {
+    setTarefas(tarefas.filter(tarefa => tarefa.id != id))
   }
 
   return (
@@ -42,7 +46,7 @@ function App() {
       </Grid>
 
       <Grid item xs={12} md={5}>
-        <TextField variant="standard" label="Task" onChange={handleNomeTarefa}/>
+        <TextField variant="standard" label="Task" onChange={handleOnChangeNameTask}/>
       </Grid>
 
       <Grid item xs={12} md={4}>
@@ -54,7 +58,15 @@ function App() {
                   tarefas && tarefas.map(tarefa => (
                     <TableRow key={tarefa.id}>
                       <TableCell>
-                        {tarefa.descricao}
+                      <Typography>{tarefa.descricao}</Typography>
+                      </TableCell>
+                      <TableCell >
+                        <Button 
+                        onClick={() => handleRemoveTask(tarefa.id)}
+                        variant="outlined" 
+                        size='small'>
+                          <Typography>X</Typography>
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))
@@ -67,7 +79,7 @@ function App() {
 
       <Grid item xs={12} md={4}>
         <ButtonGroup>
-          <Button variant="text" onClick={adicionarTarefa}>
+          <Button variant="text" onClick={addTask}>
             Adicionar
           </Button>
         </ButtonGroup>
